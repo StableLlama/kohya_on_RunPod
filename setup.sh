@@ -27,8 +27,12 @@ cd ..
 # get kohya in the branch "sd3-flux.1" to train Flux.1:
 echo "---------- get kohya"
 cd /workspace
-#apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
-apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
+apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
+# TODO: is this sufficient?
+#apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
+apt-get -y install cudnn-cuda-12 libnccl2 libnccl-dev
+
+# accelerate config
 wget https://github.com/StableLlama/kohya_on_RunPod/raw/main/accelerate/default_config.yaml -O /root/.cache/huggingface/accelerate/default_config.yaml
 
 if [ ! -f "kohya_ss" ]; then
@@ -49,8 +53,6 @@ export LD_LIBRARY_PATH=$TENSORRT_LIBS_PATH:$CUDNN_PATH/lib:$LD_LIBRARY_PATH
 echo "---------- setup kohya"
 chmod +x ./setup.sh
 ./setup.sh -n -p -r -s -u
-
-accelerate config
 
 # update the python packages
 pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 torchaudio --index-url https://download.pytorch.org/whl/cu121
