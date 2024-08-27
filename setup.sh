@@ -45,6 +45,7 @@ chmod +x ./setup.sh
 pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 --index-url https://download.pytorch.org/whl/cu121
 
 echo "---------- start kohya"
-# to start kohya-ss you need to run in the directory "/workspace/kohya_ss":
-./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
+echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\":"
+echo ""
+echo "./gui.sh --server_port 7860 --listen=0.0.0.0 --headless"
 
