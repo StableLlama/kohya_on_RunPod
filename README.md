@@ -28,6 +28,7 @@ As downloading Flux.1[dev] requires a HF_TOKEN this is the first step that you m
    > runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04
    
    and go to "Edit Template" to give it at least 40 GB temporary and 50 GB persistant memory.
+   At the exposed HTTP ports add `7860, 6006`.
    Also add the "Environment Variable" with the key `HF_TOKEN` that uses as value the secret
    (click on the key icon and select "HF_TOKEN"):
    ![Screenshot_002_new_pod](images/Screenshot_002_new_pod.png)
@@ -66,6 +67,11 @@ Once you have started it, it takes a short time to set itself up. Once it is rea
 can click on "Connect" to see the options about how to connect to this machine.
 As written above I'm using the SSH connection for that.
 
+Note: When you add `-L 17860:localhost:7860 -L 16006:localhost:6006` to the SSH command
+you are forwarding the ports from kohya_ss and TensorBoard to your local machine as
+the ports 17860 and 16006, so you can access it directly at http://localhost:17860/ 
+and http://localhost:16006/
+
 Once you have the SSH connection running please follow with these steps:
 
 1. Run these commands (copy & paste from there is fine) - **but make sure** that the
@@ -73,12 +79,13 @@ Once you have the SSH connection running please follow with these steps:
    exchanged `&dl=1`:
 
    ```
-   apt-get update
-   apt-get install unzip
+   apt-get update --yes
+   apt-get install --yes unzip
    cd /workspace
    wget --show-progress  'https://www.dropbox.com/scl/fo/ix7lumksw49w5ljlm68jb/ALQq7qPJyapoczVNDUSe9vHk?rlkey=h5rnnp2zt04zr32mnus4u5quv&dl=1' -O import_data.zip
    unzip import_data.zip
    wget https://raw.githubusercontent.com/StableLlama/kohya_on_RunPod/main/setup.sh -O setup.sh
+   chmod a+x setup.sh
    ```
 
    Now you just need to call
@@ -88,7 +95,8 @@ Once you have the SSH connection running please follow with these steps:
    and you are ready to go.
 2. When you stoped the Pod and are restarting it again it is sufficient to just call
    ```
-   /workspace/setup.sh
+   cd /workspace/kohya_ss
+   ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
    ```
    to get going.   
 3. Once kohya-ss is running you can go to the RunPod page at "Connect" and click on
