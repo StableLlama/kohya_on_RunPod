@@ -21,17 +21,31 @@ As downloading Flux.1[dev] requires a HF_TOKEN this is the first step that you m
    of the server. Don't be afraid of it, the relevant commands are given here.
    But what's not given here is how you get your local SSH key, please look it up
    yourself, there are many free ressources about how to use SSH in the internet.
-5. Create a new pod of type
+4. *(Optional)* You might want to create a network storage as this allows an easy
+   switch between different pods without downloading everything (models, training
+   data) again. The recommended size it at least 50 GB. What you need to take care
+   of is that the network storage must be in the same data center as the pod you are
+   generating later on.
+
+   ![Screenshot_001_storage](images/Screenshot_001_storage.png)
+6. Create a new pod of type
    
    > RunPod Pytorch 2.1
    > 
    > runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04
+
+   ![Screenshot_002_new_pod0](images/Screenshot_002_new_pod0.png)
    
-   and go to "Edit Template" to give it at least 40 GB temporary and 50 GB persistant memory.
+   then go to "Edit Template" to give it at least 40 GB temporary and 50 GB persistant memory.
    At the exposed HTTP ports add `7860, 6006`.
    Also add the "Environment Variable" with the key `HF_TOKEN` that uses as value the secret
    (click on the key icon and select "HF_TOKEN"):
-   ![Screenshot_002_new_pod](images/Screenshot_002_new_pod.png)
+   
+   ![Screenshot_002_new_pod2](images/Screenshot_002_new_pod2.png)
+   
+   which leads to
+   
+   ![Screenshot_002_new_pod1](images/Screenshot_002_new_pod1.png)
 
 Now you would be ready to run it but to be more efficient and don't waste money you should 
 prepare the data to train right now.
@@ -70,7 +84,10 @@ As written above I'm using the SSH connection for that.
 Note: When you add `-L 17860:localhost:7860 -L 16006:localhost:6006` to the SSH command
 you are forwarding the ports from kohya_ss and TensorBoard to your local machine as
 the ports 17860 and 16006, so you can access it directly at http://localhost:17860/ 
-and http://localhost:16006/
+and http://localhost:16006/. An command could look for example like
+```
+ssh -L 17860:localhost:7860 -L 16006:localhost:6006 root@192.168.245.67 -p 22058 -i ~/.ssh/id_ed25519
+```
 
 Once you have the SSH connection running please follow with these steps:
 
