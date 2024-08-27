@@ -13,7 +13,7 @@ cd /workspace/models
 if [ ! -f "t5xxl_fp16.safetensors" ]; then
     wget --show-progress https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors?download=true -O t5xxl_fp16.safetensors
 fi
-if [ ! -f "clip_l.safetensors.safetensors" ]; then
+if [ ! -f "clip_l.safetensors" ]; then
     wget --show-progress https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true -O clip_l.safetensors
 fi
 if [ ! -f "ae.safetensors" ]; then
@@ -27,7 +27,9 @@ cd ..
 # get kohya in the branch "sd3-flux.1" to train Flux.1:
 echo "---------- get kohya"
 cd /workspace
-apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
+#apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
+apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
+wget https://github.com/StableLlama/kohya_on_RunPod/raw/main/accelerate/default_config.yaml -O /root/.cache/huggingface/accelerate/default_config.yaml
 
 if [ ! -f "kohya_ss" ]; then
     git clone --recursive https://github.com/bmaltais/kohya_ss.git
@@ -37,12 +39,21 @@ if [ ! -f "kohya_ss" ]; then
 fi
 cd /workspace/kohya_ss
 
+echo "---------- prepare setup"
+python -m pip install --upgrade pip
+pip install tensorflow[and-cuda]>=2.15.0 --extra-index-url https://pypi.nvidia.com
+CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))
+TENSORRT_LIBS_PATH=$(dirname $(python -c "import tensorrt_libs;print(tensorrt_libs.__file__)"))
+export LD_LIBRARY_PATH=$TENSORRT_LIBS_PATH:$CUDNN_PATH/lib:$LD_LIBRARY_PATH
+
 echo "---------- setup kohya"
 chmod +x ./setup.sh
 ./setup.sh -n -p -r -s -u
 
-# update the phython packages
-pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 --index-url https://download.pytorch.org/whl/cu121
+accelerate config
+
+# update the python packages
+pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 echo "---------- start kohya"
 echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\":"
