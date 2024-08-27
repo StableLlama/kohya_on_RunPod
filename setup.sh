@@ -7,6 +7,7 @@
 # You must make sure that in the secrets you set your HuggingFace token in the "key"/variable HF_TOKEN
 
 # get the models:
+echo "---------- get the models"
 mkdir -p /workspace/models
 cd /workspace/models
 if [ ! -f "t5xxl_fp16.safetensors" ]; then
@@ -24,6 +25,7 @@ fi
 cd ..
 
 # get kohya in the branch "sd3-flux.1" to train Flux.1:
+echo "---------- get kohya"
 cd /workspace
 apt update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
 
@@ -35,12 +37,14 @@ if [ ! -f "kohya_ss" ]; then
 fi
 cd /workspace/kohya_ss
 
+echo "---------- setup kohya"
 chmod +x ./setup.sh
 ./setup.sh -n -p -r -s -u
 
 # update the phython packages
 pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 --index-url https://download.pytorch.org/whl/cu121
 
+echo "---------- start kohya"
 # to start kohya-ss you need to run in the directory "/workspace/kohya_ss":
 ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
 
