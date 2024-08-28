@@ -89,7 +89,14 @@ and http://localhost:16006/. An command could look for example like
 ssh -L 17860:localhost:7860 -L 16006:localhost:6006 root@192.168.245.67 -p 22058 -i ~/.ssh/id_ed25519
 ```
 
-Once you have the SSH connection running please follow with these steps:
+An alternative is to use the terminal that is inside Jupyter Notebook. Using this terminal
+has the advantage that you can close the browser and shut down your local PC and the
+GPU server keeps running kohya_ss without taking any special measures (e.g. starting
+it with `nohup`).
+
+![Screenshot_004_Jupyter_Terminal](images/Screenshot_004_Jupyter_Terminal.png)
+
+Once you have the SSH connection or the Jupyter terminal running please follow with these steps:
 
 1. Run these commands (copy & paste from there is fine) - **but make sure** that the
    Dropbox link is exactly that one that you got from Dropbox but with the
