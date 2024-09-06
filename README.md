@@ -29,10 +29,10 @@ As downloading Flux.1[dev] requires a HF_TOKEN this is the first step that you m
 
    ![Screenshot_001_storage](images/Screenshot_001_storage.png)
 6. Create a new pod of type
-   
-   > RunPod Pytorch 2.1
+
+   > RunPod Pytorch 2.2.0
    > 
-   > runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04
+   > runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
 
    ![Screenshot_002_new_pod0](images/Screenshot_002_new_pod0.png)
    
