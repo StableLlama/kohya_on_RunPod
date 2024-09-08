@@ -27,9 +27,9 @@ cd ..
 # get kohya in the branch "sd3-flux.1" to train Flux.1:
 echo "---------- get kohya"
 cd /workspace
-apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
-# TODO: is this sufficient?
-#apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
+# TODO: is this required?
+# apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
+apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
 apt-get -y install cudnn-cuda-12 libnccl2 libnccl-dev
 
 # accelerate config
@@ -54,8 +54,8 @@ echo "---------- setup kohya"
 chmod +x ./setup.sh
 ./setup.sh -n -p -r -s -u
 
-# update the python packages
-pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 torchaudio --index-url https://download.pytorch.org/whl/cu121
+# update the python packages - not required anymore as kohya-ss was updated upstream
+# pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 echo "---------- start kohya"
 echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\":"
