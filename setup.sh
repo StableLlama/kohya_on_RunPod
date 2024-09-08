@@ -60,5 +60,6 @@ chmod +x ./setup.sh
 echo "---------- start kohya"
 echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\":"
 echo ""
+echo "cd /workspace/kohya_ss"
 echo "./gui.sh --server_port 7860 --listen=0.0.0.0 --headless"
 
