@@ -44,6 +44,7 @@ fi
 cd /workspace/kohya_ss
 
 echo "---------- prepare setup"
+export PIP_ROOT_USER_ACTION=ignore
 python -m pip install --upgrade pip
 pip install tensorflow[and-cuda]>=2.15.0 --extra-index-url https://pypi.nvidia.com
 CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))
