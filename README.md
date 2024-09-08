@@ -121,8 +121,18 @@ Once you have the SSH connection or the Jupyter terminal running please follow w
    cd /workspace/kohya_ss
    ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
    ```
-   to get going.   
-3. Once kohya-ss is running you can go to the RunPod page at "Connect" and click on
+   to get going.
+
+   **Hint:** when you are using a SSH connection and not the Jupyter Notebook terminal, you might
+   prefer to use `screen` to run kohya-ss, as this allows you to detach the session,
+   log out and the reattach it again when you log in with ssh later on.
+   ```
+   cd /workspace/kohya_ss
+   screen ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
+   ```
+   Then pressing `crtl-a` followed by `d` deattches the session. To reattach you need
+   to run `screen -RD` 
+4. Once kohya-ss is running you can go to the RunPod page at "Connect" and click on
    the "Connect to HTTP Service 7860" and the kohya-ss GUI opens up in your browser
 
 ## Using kohya-ss
@@ -132,8 +142,8 @@ You can use it as you are used to. All the training data is in directories like
 
 The models to train on are located at:
 ```
-/workspace/models/ae.safetensors
-/workspace/models/clip_l.safetensors
-/workspace/models/t5xxl_fp16.safetensors
-/workspace/models/flux1-dev.safetensors
+/workspace/models/ae.safetensors          (335304388 bytes)
+/workspace/models/clip_l.safetensors      (246144152 bytes)
+/workspace/models/t5xxl_fp16.safetensors  (9787841024 bytes)
+/workspace/models/flux1-dev.safetensors   (23802932552 bytes)
 ```
