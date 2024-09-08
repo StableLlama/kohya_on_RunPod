@@ -111,12 +111,18 @@ Once you have the SSH connection or the Jupyter terminal running please follow w
    chmod a+x setup.sh
    ```
 
+   **Note:** When you are using SSH in the in the type *"SSH over exposed TCP: (Supports SCP & SFTP)"*
+   (i.e. directly connecting to an IP address like "194.68.245.31") and **not** in
+   the type *"Basic SSH Terminal: (No support for SCP & SFTP)"* (i.e. connecting
+   to "ssh.runpod.io") the set environmen variable `HF_TOKEN` is **not** set for you.
+   You must do that manually with `export HF_TOKEN=hf_gSui`... before the next step.
+   
    Now you just need to call
    ```
    /workspace/setup.sh
    ```
    and you are ready to go.
-2. When you stoped the Pod and are restarting it again it is sufficient to just call
+3. When you stoped the Pod and are restarting it again it is sufficient to just call
    ```
    cd /workspace/kohya_ss
    ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless
