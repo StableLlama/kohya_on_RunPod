@@ -41,7 +41,15 @@ apt-get update --yes && apt-get -y install python3-venv python3-tk vim screen li
 apt-get -y install cudnn-cuda-12 libnccl2 libnccl-dev
 
 # accelerate config
-wget https://github.com/StableLlama/kohya_on_RunPod/raw/main/accelerate/default_config.yaml -O /root/.cache/huggingface/accelerate/default_config.yaml
+if (( $RUNPOD_GPU_COUNT > 1 )); then
+    echo "Download of multi GPU config for accelerate"
+    wget https://github.com/StableLlama/kohya_on_RunPod/raw/main/accelerate/4gpu_config.yaml -O /root/.cache/huggingface/accelerate/default_config.yaml
+    echo "Adapting accelerate for '$RUNPOD_GPU_COUNT' GPUs"
+    sed -i "s/num_processes: 4/num_processes: $RUNPOD_GPU_COUNT/g" /root/.cache/huggingface/accelerate/default_config.yaml
+else
+    echo "Download of single GPU config for accelerate"
+    wget https://github.com/StableLlama/kohya_on_RunPod/raw/main/accelerate/default_config.yaml -O /root/.cache/huggingface/accelerate/default_config.yaml
+fi
 
 if [ ! -f "kohya_ss" ]; then
     git clone --recursive https://github.com/bmaltais/kohya_ss.git
@@ -81,4 +89,8 @@ echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\"
 echo ""
 echo "cd /workspace/kohya_ss"
 echo "./gui.sh --server_port 7860 --listen=0.0.0.0 --headless"
+echo ""
+echo "When starting via a SSH connection you might prefer to start it with 'screen'"
+echo "screen ./gui.sh --server_port 7860 --listen=0.0.0.0 --headless"
+
 
