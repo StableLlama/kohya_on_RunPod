@@ -103,8 +103,7 @@ Once you have the SSH connection or the Jupyter terminal running please follow w
    exchanged `&dl=1`:
 
    ```
-   apt-get update --yes
-   apt-get install --yes unzip
+   apt-get update --yes && apt-get install --yes unzip
    cd /workspace
    wget --show-progress  'https://www.dropbox.com/scl/fo/ix7lumksw49w5ljlm68jb/ALQq7qPJyapoczVNDUSe9vHk?rlkey=h5rnnp2zt04zr32mnus4u5quv&dl=1' -O import_data.zip
    unzip import_data.zip
