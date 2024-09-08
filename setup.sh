@@ -8,6 +8,11 @@
 
 # get the models:
 echo "---------- get the models"
+if [ -z "${HF_TOKEN}" ]; then
+    echo "WARNING!!! The environment variable 'HF_TOKEN' is empty."
+    echo "WARNING!!! You will most likely NOT be able to download Flux.1[dev]!"
+    echo "WARNING!!! You will must provide it yourself!"
+fi
 mkdir -p /workspace/models
 cd /workspace/models
 if [ ! -f "t5xxl_fp16.safetensors" ]; then
@@ -27,9 +32,12 @@ cd ..
 # get kohya in the branch "sd3-flux.1" to train Flux.1:
 echo "---------- get kohya"
 cd /workspace
-# TODO: is this required?
+export DEBIAN_FRONTEND=noninteractive
+# TODO: is this required? most likely not
 # apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8 libcudnn8-dev
-apt-get update --yes && apt-get install --yes python3-venv python3-tk vim libcudnn8
+apt-get update --yes && apt-get -y install python3-venv python3-tk vim screen libcudnn8
+# TODO: is this required?
+# apt-get -y install cudnn-cuda-12 libnccl2
 apt-get -y install cudnn-cuda-12 libnccl2 libnccl-dev
 
 # accelerate config
@@ -59,6 +67,16 @@ chmod +x ./setup.sh
 # pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 xformers==0.0.27.post2 torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 echo "---------- start kohya"
+cd /workspace/kohya_ss
+for MODEL in "/workspace/models/t5xxl_fp16.safetensors" "/workspace/models/clip_l.safetensors" "/workspace/models/ae.safetensors" "/workspace/models/flux1-dev.safetensors"; do
+    if [ -f "${MODEL}" ]; then
+        FILESIZE=$(stat -c%s "${MODEL}")
+        echo "${MODEL} is available and has a size of ${FILESIZE} bytes"
+    else
+        echo "WARNING: ${MODEL} is NOT available"
+    fi
+done
+echo ""
 echo "To start kohya-ss you need to run in the directory \"/workspace/kohya_ss\":"
 echo ""
 echo "cd /workspace/kohya_ss"
