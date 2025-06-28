@@ -54,7 +54,7 @@ fi
 if [ ! -f "kohya_ss" ]; then
     git clone --recursive https://github.com/bmaltais/kohya_ss.git
     cd /workspace/kohya_ss
-    git checkout sd3-flux.1
+    git checkout master
     git pull --recurse-submodules
 fi
 cd /workspace/kohya_ss
